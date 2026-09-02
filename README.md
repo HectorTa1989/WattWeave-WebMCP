@@ -2,8 +2,12 @@
 
 > **Turn a peak-energy alert into a safe, visible load plan in seconds.**
 
-WattWeave is a live building-energy sandbox where a human pins non-negotiable constraints and an agent
+WattWeave is an interactive building-energy sandbox where a human pins non-negotiable constraints and an agent
 discovers, simulates, stages, and applies a safe load-shifting plan — inside the same visual interface.
+
+> **Default mode is a deterministic simulation.** The header always says **Sandbox · no devices** unless an
+> operator explicitly configures the optional server-side control gateway. Seeded demand and tariff data must
+> never be presented as live building telemetry.
 
 It is **not** another energy dashboard. Its core loop is **collaborative constraint solving with visible,
 cancellable, reversible actions**, powered by [WebMCP](#why-webmcp-is-indispensable).
@@ -27,7 +31,10 @@ cancellable, reversible actions**, powered by [WebMCP](#why-webmcp-is-indispensa
 - [Testing](#testing)
 - [Three-minute demo script](#three-minute-demo-script)
 - [Deployment](#deployment)
+- [External OpenAI agent demo](#external-openai-agent-demo)
+- [Optional real control gateway](#optional-real-control-gateway)
 - [Wiring real Polar license validation](#wiring-real-polar-license-validation)
+- [Scope](#scope)
 
 ---
 
@@ -121,8 +128,9 @@ npm install
 npm run dev
 ```
 
-Open <http://localhost:5173>. The app is fully offline and deterministic — no API keys, no network calls,
-no external services.
+Open <http://localhost:5173>. The default app is fully offline and deterministic — no API keys, network
+calls, external services, device commands, or live telemetry. Optional integrations are opt-in and visibly
+change the header mode.
 
 | Script | What it does |
 | --- | --- |
@@ -130,12 +138,22 @@ no external services.
 | `npm run build` | Typecheck + production build to `dist/` |
 | `npm run preview` | Serve the production build |
 | `npm run typecheck` | `tsc --noEmit` |
-| `npm test` | Vitest — solver, time model, and 14 intent evals |
-| `npm run e2e` | Playwright — hero, impossible, cancellation, rollback journeys |
+| `npm test` | Vitest — solver, time model, gateway checks, and 15 intent evals |
+| `npm run e2e` | Playwright — operator and external-agent browser journeys |
+| `npm run agent:demo` | External OpenAI Responses agent over the native WebMCP boundary |
+| `npm run demo:record` | Record the captioned three-minute judge demo to `demo/` |
+| `npm run demo:capture` | Capture Remotion demo frames + element rectangles from the live app |
+| `npm run demo:voice` | Synthesize the neural voiceover and build the Remotion timeline |
+| `npm run demo:render` | Render `demo/wattweave-demo.mp4` with Remotion |
+| `npm run gateway:home-assistant` | Server-side Home Assistant control-gateway reference |
 
 > **Try it without an agent.** Click **Inspector** in the top bar. It lists every tool registered for the
 > current UI state, with annotations and schemas, and lets you execute them with real arguments. Lock a
 > device or approve a plan and watch the list change underneath you.
+
+The Inspector is a fallback and developer aid, not the external-agent proof. The separate
+[`scripts/external-agent-demo.mjs`](scripts/external-agent-demo.mjs) process receives tools only through
+`navigator.modelContext`; it never imports WattWeave's store or calls the Inspector.
 
 ---
 
@@ -238,7 +256,7 @@ WattWeave/
 ├── tests/                         ── Vitest ──
 │   ├── time.test.ts               Slot model and integer-Wh invariants
 │   ├── solver.test.ts             Seed numbers, constraints, rebound, battery, inverses, cancellation
-│   └── intents.test.ts            14 intent evals driving the real WebMCP tools headlessly
+│   └── intents.test.ts            15 intent evals driving the real WebMCP tools headlessly
 │
 └── e2e/
     └── hero.spec.ts               Hero, impossible, cancellation, rollback, untrusted, billing journeys
@@ -410,7 +428,7 @@ manual toggle, and `prefers-reduced-motion` collapses all animation.
 
 ### Unit and intent evals — `npm test`
 
-**32 tests across 3 files.** The intent suite drives the *real* WebMCP tools headlessly, exactly as an
+**36 tests across 4 files.** The intent suite drives the *real* WebMCP tools headlessly, exactly as an
 agent would:
 
 | # | Intent case | Asserts |
@@ -437,7 +455,9 @@ limits, score-breakdown consistency, inverse-schedule round-trips, and cancellat
 
 Playwright journeys: **hero** (lock → simulate → compare → preview → approve → commit),
 **impossible plan**, **cancellation**, **rollback**, **untrusted feed**, **inspector gating**, and
-**billing** (admin bypass, free-plan gating, license activation).
+**billing** (admin bypass, free-plan gating, license activation). A ninth journey injects an external
+`navigator.modelContext`, invokes every lifecycle stage outside the app, pauses for the human approval
+click, commits with the issued capability, and rolls back.
 
 ---
 
@@ -445,22 +465,52 @@ Playwright journeys: **hero** (lock → simulate → compare → preview → app
 
 | Time | Beat |
 | --- | --- |
-| **0:00–0:20** | The 212 kW peak crosses the 170 kW target line. Point at the red event window. |
-| **0:20–0:40** | Click a device, lock it. Watch the tool counter in the top bar go 3 → 5. Open the **Inspector** to show `commit_load_plan` sitting in *Not yet available*. |
-| **0:40–1:20** | Hit **Simulate**. The sweep cursor crosses the chart. Hit **Cancel** mid-sweep — nothing changed. Run it again and let it finish. |
-| **1:20–1:50** | Three candidates. Scroll to **Naïve shed & restore**: best in-window peak (138 kW) and cheapest — and a **224 kW rebound**, flagged, with no Stage button. |
-| **1:50–2:20** | **Preview** the balanced plan — the green ghost line drops under the target. **Stage** it. The approval drawer shows every check and every changed load. |
-| **2:20–2:45** | **Approve and apply**. The inspector's tool list gains `commit_load_plan` at that exact moment. Apply. The meter falls to **168 kW**. |
-| **2:45–3:00** | Show the receipt: 212 → 168 kW, rebound 160 kW, critical loads untouched. Click **Roll back** — the baseline returns exactly, and the audit trail keeps both entries. |
+| **0:00–0:18** | Start on the header: **Sandbox · no devices**. The 212 kW peak crosses the 170 kW target; say clearly that the telemetry is seeded. |
+| **0:18–0:42** | The external agent reads the event through WebMCP. Open **Utility advisory**: the feed contains a prompt injection, but remains inside the `untrusted` envelope. |
+| **0:42–1:02** | Lock the Computer Lab. Let the agent attempt its old scenario version: `STALE_SCENARIO` is rejected. It rereads v2. |
+| **1:02–1:27** | Run simulation, cancel during the sweep, and show “Nothing changed.” Run again. The deterministic candidate computation is real; the inputs are simulated. |
+| **1:27–1:52** | Contrast the balanced plan with **Naïve shed & restore**: 138 kW in-window, but a disqualifying 224 kW rebound and no Stage action. |
+| **1:52–2:18** | The agent previews and stages the balanced plan. The drawer shows 168 kW, 160 kW rebound, both EV targets, reserve floor, exact changes, and rollback readiness. |
+| **2:18–2:40** | Show `commit_load_plan` is absent. Click **Approve schedule** once; only then does the external agent receive the tool and approval capability. It commits. |
+| **2:40–3:00** | Show the simulation receipt: 212 → 168 kW, critical loads untouched. The agent calls rollback; the 212 kW baseline returns exactly and both audit entries remain. |
 
-**Bonus beat:** open **Utility advisory** in the banner to show the prompt injection in the tariff feed —
-and that it changed nothing.
+The recording automation follows these beats and keeps the sandbox disclosure visible throughout. With the
+dev server running, execute `npm run demo:record`; the captioned WebM video is written to
+`demo/wattweave-3-minute-demo.webm`. Set `DEMO_SPEED=0.05` for a fast choreography smoke test.
+
+### Rendered walkthrough video (Remotion)
+
+The polished cut is [demo/wattweave-demo.mp4](demo/wattweave-demo.mp4) — an animated cursor clicks every
+control in turn, each resulting state change is boxed and labelled on screen, and a compact caption strip
+sits at the very bottom edge so it never covers the UI. The launch copy that goes with it is
+[demo/POST.md](demo/POST.md).
+
+It is produced by a three-step, reproducible pipeline (dev server running for the first step):
+
+```bash
+npm run demo:capture   # Playwright drives the real app; saves frames + element rects
+npm run demo:voice     # neural voiceover per beat + caption timings -> remotion/src/timeline.json
+npm run demo:render    # Remotion composites cursor, highlight boxes and subtitles
+```
+
+The storyboard lives in [scripts/demo/beats.mjs](scripts/demo/beats.mjs): one narrated beat per feature,
+each declaring the controls to click and the elements to highlight afterwards. Because the voiceover
+durations define the frame budget, and the highlight rectangles come from real `getBoundingClientRect()`
+measurements taken at capture time, narration, cursor and boxes cannot drift apart. The voice is the free
+`edge-tts` client (`en-US-AndrewMultilingualNeural` by default — override with `DEMO_VOICE` / `DEMO_RATE`);
+`python -m pip install edge-tts` is the only extra prerequisite.
+
+The narrated cut is [wattweave-3-minute-demo-voiced.webm](demo/wattweave-3-minute-demo-voiced.webm), with its
+companion [wattweave-narration.mp3](demo/wattweave-narration.mp3). The voice was generated with the free
+`edge-tts` client using Microsoft `en-US-GuyNeural`; no paid TTS account was used. For fully offline synthesis,
+[Piper](https://github.com/k-rks/piper) is the recommended alternative, while Hugging Face Spaces provide
+free CPU-hosted endpoints subject to availability and quotas.
 
 ---
 
 ## Deployment
 
-The app is a fully static bundle with no backend:
+The default sandbox is a fully static bundle with no backend:
 
 ```bash
 npm run build
@@ -476,6 +526,76 @@ Optional environment variables (see `.env.example`):
 | `VITE_POLAR_CHECKOUT_LINK` | Polar hosted checkout link for WattWeave Pro |
 | `VITE_POLAR_ORG` | Polar organization slug, used for manage-subscription links |
 | `VITE_POLAR_VALIDATE_URL` | Optional endpoint that proxies Polar license validation |
+| `VITE_CONTROL_GATEWAY_URL` | Optional server-side device-control gateway; empty means sandbox |
+
+---
+
+## External OpenAI agent demo
+
+The harness uses the OpenAI Responses API's function-calling loop. WattWeave registers its current tools
+through `navigator.modelContext`; the separate Node process converts those same schemas to Responses tools,
+executes model-selected calls through the browser boundary, and sends each result back as a
+`function_call_output`. The model cannot import app state or bypass dynamic registration.
+
+Start WattWeave in one terminal:
+
+```bash
+npm run dev
+```
+
+Then set `OPENAI_API_KEY` in the external process environment and run:
+
+```bash
+npm run agent:demo
+```
+
+The visible browser pauses after staging. Review the exact diff and click **Approve schedule**; the agent
+then discovers `commit_load_plan`, reads the newly issued approval capability, commits, verifies the result,
+and invokes the exact rollback. `OPENAI_MODEL` can override the default `gpt-5.6`. The API key remains in
+Node and is never exposed to the page bundle.
+
+CI proves the same native boundary without spending model tokens:
+
+```bash
+npm run e2e -- e2e/external-agent.spec.ts
+```
+
+---
+
+## Optional real control gateway
+
+When `VITE_CONTROL_GATEWAY_URL` is empty, commit and rollback return an explicit sandbox receipt and make
+no network request. When configured, WattWeave POSTs the approval-gated schedule or its exact inverse to
+the gateway **before** changing local state. A timeout, network error, rejection, or missing operation id
+fails closed and leaves the local schedule unchanged.
+
+The browser sends no device credential. [`examples/home-assistant-gateway.mjs`](examples/home-assistant-gateway.mjs)
+keeps the Home Assistant bearer token server-side, enforces origin and idempotency checks, and fires a
+`wattweave_schedule` event through Home Assistant's REST API. A Home Assistant automation maps WattWeave
+asset IDs to the installation's approved entities or BMS commands.
+
+> This is a documented loopback reference adapter, not production building-control infrastructure. Keep its
+> default `127.0.0.1` bind during evaluation; a real deployment must add organization authentication, transport
+> security, command allowlists, rate limits, monitoring, and site-specific safety interlocks.
+
+Configure the server process:
+
+```text
+HOME_ASSISTANT_URL=http://homeassistant.local:8123
+HOME_ASSISTANT_TOKEN=<server-side long-lived access token>
+CONTROL_GATEWAY_ORIGIN=http://localhost:5173
+```
+
+Run it:
+
+```bash
+npm run gateway:home-assistant
+```
+
+Then set `VITE_CONTROL_GATEWAY_URL=http://127.0.0.1:8787/control` before starting WattWeave. The header
+changes to **Control gateway**. That label proves the route is configured—not that seeded demand has become
+live telemetry. Home Assistant documents its JSON REST API, bearer authentication, events, and service
+calls in the [official REST API reference](https://developers.home-assistant.io/docs/api/rest/).
 
 ---
 
@@ -509,10 +629,14 @@ licensing and keeps working either way.
 
 ## Scope
 
-**This is a deterministic simulation.** It does not connect to real building controls, utility accounts,
-device APIs or weather feeds, and it does no machine-learning forecasting. That is deliberate: the point
-of the demo is the *interaction contract* between a human and an agent over shared, semantic operations —
-not the fidelity of the physics.
+**The default experience is a deterministic simulation.** Demand, solar, tariff, battery, EV, and device
+state are seeded; there is no utility account, weather feed, or machine-learning forecast. In sandbox mode,
+“apply” changes only WattWeave's local schedule. The optional control gateway can forward an approved
+schedule to a real automation system, but it does not turn the seeded scenario into live telemetry.
+
+That boundary is deliberate and visible: the product demonstrates the interaction contract between a human
+and an agent over shared semantic operations, while refusing to imply a real building is connected when it
+is not.
 
 ---
 

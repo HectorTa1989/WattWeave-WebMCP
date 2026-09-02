@@ -1,13 +1,14 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { activeGridWh, useStore } from '../state/store'
 import { fmtKw, fmtKwh, peakW, slotLabel12h } from '../domain/time'
+import { commitThroughControl } from '../integrations/controlOperations'
 import { CheckIcon, LockIcon, ShieldIcon, WarnIcon, XIcon } from './Icons'
 
 /**
  * The visible approval gate.
  *
  * Nothing is applied until the operator reads this diff and clicks
- * "Approve and apply schedule". Only that click mints the approval token —
+ * "Approve schedule". Only that click mints the approval token —
  * and only then does `commit_load_plan` become discoverable to the agent.
  */
 
@@ -15,6 +16,8 @@ export function ApprovalDrawer() {
   const state = useStore()
   const staged = state.staged
   const approveRef = useRef<HTMLButtonElement>(null)
+  const [committing, setCommitting] = useState(false)
+  const [commitError, setCommitError] = useState<string | null>(null)
 
   useEffect(() => {
     if (staged && !staged.approvalToken) approveRef.current?.focus()
@@ -33,9 +36,18 @@ export function ApprovalDrawer() {
   const currentPeak = peakW(activeGridWh(state))
   const approved = Boolean(staged.approvalToken)
 
-  const commit = () => {
+  const commit = async () => {
     if (!staged.approvalToken) return
-    state.commitPlan(staged.stageId, staged.approvalToken, `commit-${staged.stageId}`, 'agent')
+    setCommitting(true)
+    setCommitError(null)
+    const result = await commitThroughControl(
+      staged.stageId,
+      staged.approvalToken,
+      `commit-${staged.stageId}`,
+      'operator',
+    )
+    if (!result.ok) setCommitError(result.message)
+    setCommitting(false)
   }
 
   return (
@@ -166,7 +178,7 @@ export function ApprovalDrawer() {
           {!approved ? (
             <>
               <button ref={approveRef} className="btn success big" onClick={() => state.approveStaged()} data-testid="approve-btn">
-                <CheckIcon size={15} /> Approve and apply schedule
+                <CheckIcon size={15} /> Approve schedule
               </button>
               <div style={{ fontSize: 11, color: 'var(--text-3)', textAlign: 'center', marginTop: 8, lineHeight: 1.45 }}>
                 The agent cannot see <code style={{ fontFamily: 'var(--font-mono)' }}>commit_load_plan</code> until you approve.
@@ -174,9 +186,14 @@ export function ApprovalDrawer() {
             </>
           ) : (
             <>
-              <button className="btn primary big" onClick={commit} data-testid="commit-btn">
-                Apply now
+              <button className="btn primary big" onClick={() => void commit()} disabled={committing} data-testid="commit-btn">
+                {committing ? 'Sending…' : 'Apply now'}
               </button>
+              {commitError && (
+                <div className="violation-note" style={{ marginTop: 8 }} data-testid="commit-error">
+                  {commitError}
+                </div>
+              )}
               <div style={{ fontSize: 11, color: 'var(--green)', textAlign: 'center', marginTop: 8, fontFamily: 'var(--font-mono)' }}>
                 approval token issued · commit_load_plan is now discoverable
               </div>

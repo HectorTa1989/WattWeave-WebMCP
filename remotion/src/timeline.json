@@ -1,0 +1,1021 @@
+{
+  "fps": 30,
+  "width": 1920,
+  "height": 1080,
+  "durationInFrames": 4906,
+  "beats": [
+    {
+      "id": "01-intro",
+      "from": 1,
+      "durationInFrames": 428,
+      "audio": "audio/01-intro.mp3",
+      "shots": [
+        {
+          "image": "frames/00-01-intro.png",
+          "target": null,
+          "click": false,
+          "highlights": [
+            {
+              "x": 1042,
+              "y": 41,
+              "width": 212,
+              "height": 40,
+              "label": "Sandbox · no devices"
+            },
+            {
+              "x": 881,
+              "y": 41,
+              "width": 142,
+              "height": 40,
+              "label": "Live WebMCP tools"
+            }
+          ],
+          "weight": 2.2,
+          "from": 1,
+          "durationInFrames": 428
+        }
+      ],
+      "cues": [
+        {
+          "text": "This is WattWeave.",
+          "from": 2,
+          "to": 41
+        },
+        {
+          "text": "A peak demand alert arrives, and an agent turns",
+          "from": 41,
+          "to": 131
+        },
+        {
+          "text": "it into a safe, reversible load plan, with a",
+          "from": 131,
+          "to": 216
+        },
+        {
+          "text": "human in the loop.",
+          "from": 216,
+          "to": 250
+        },
+        {
+          "text": "It all runs in a deterministic sandbox: no real",
+          "from": 250,
+          "to": 347
+        },
+        {
+          "text": "device ever gets a command.",
+          "from": 347,
+          "to": 403
+        }
+      ]
+    },
+    {
+      "id": "02-event",
+      "from": 428,
+      "durationInFrames": 259,
+      "audio": "audio/02-event.mp3",
+      "shots": [
+        {
+          "image": "frames/01-02-event.png",
+          "target": null,
+          "click": false,
+          "highlights": [
+            {
+              "x": 1386,
+              "y": 149,
+              "width": 290,
+              "height": 40,
+              "label": "Projected peak vs. limit"
+            },
+            {
+              "x": 32,
+              "y": 237,
+              "width": 1288,
+              "height": 600,
+              "label": "Baseline schedule"
+            }
+          ],
+          "weight": 2.2,
+          "from": 1,
+          "durationInFrames": 259
+        }
+      ],
+      "cues": [
+        {
+          "text": "Here's the problem.",
+          "from": 2,
+          "to": 31
+        },
+        {
+          "text": "The utility called a demand event capped at one",
+          "from": 31,
+          "to": 108
+        },
+        {
+          "text": "hundred seventy kilowatts, and the building is",
+          "from": 108,
+          "to": 183
+        },
+        {
+          "text": "heading for two hundred twelve.",
+          "from": 183,
+          "to": 234
+        }
+      ]
+    },
+    {
+      "id": "03-injection",
+      "from": 687,
+      "durationInFrames": 404,
+      "audio": "audio/03-injection.mp3",
+      "shots": [
+        {
+          "image": "frames/02-03-injection.png",
+          "target": {
+            "x": 1687,
+            "y": 148,
+            "width": 176,
+            "height": 43
+          },
+          "label": "Open advisory",
+          "click": true,
+          "weight": 1,
+          "from": 1,
+          "durationInFrames": 47
+        },
+        {
+          "image": "frames/03-03-injection.png",
+          "target": null,
+          "click": false,
+          "highlights": [
+            {
+              "x": 57,
+              "y": 212,
+              "width": 1805,
+              "height": 159,
+              "label": "Marked UNTRUSTED, ignored"
+            }
+          ],
+          "weight": 2.2,
+          "from": 47,
+          "durationInFrames": 357
+        }
+      ],
+      "cues": [
+        {
+          "text": "The advisory attached to that event contains a",
+          "from": 2,
+          "to": 91
+        },
+        {
+          "text": "prompt injection, telling the agent to skip",
+          "from": 91,
+          "to": 174
+        },
+        {
+          "text": "safety checks and commit immediately.",
+          "from": 174,
+          "to": 245
+        },
+        {
+          "text": "WattWeave renders it as untrusted data, never as",
+          "from": 245,
+          "to": 347
+        },
+        {
+          "text": "an instruction.",
+          "from": 347,
+          "to": 378
+        }
+      ]
+    },
+    {
+      "id": "04-inspector",
+      "from": 1091,
+      "durationInFrames": 244,
+      "audio": "audio/04-inspector.mp3",
+      "shots": [
+        {
+          "image": "frames/04-04-inspector.png",
+          "target": {
+            "x": 1687,
+            "y": 148,
+            "width": 176,
+            "height": 43
+          },
+          "label": "Close advisory",
+          "click": true,
+          "weight": 1,
+          "from": 1,
+          "durationInFrames": 47
+        },
+        {
+          "image": "frames/05-04-inspector.png",
+          "target": {
+            "x": 1729,
+            "y": 38,
+            "width": 144,
+            "height": 45
+          },
+          "label": "Open WebMCP inspector",
+          "click": true,
+          "weight": 1,
+          "from": 47,
+          "durationInFrames": 47
+        },
+        {
+          "image": "frames/06-04-inspector.png",
+          "target": null,
+          "click": false,
+          "highlights": [
+            {
+              "x": 13,
+              "y": 587,
+              "width": 1893,
+              "height": 480,
+              "label": "Registered tools and annotations"
+            }
+          ],
+          "weight": 2.2,
+          "from": 93,
+          "durationInFrames": 151
+        }
+      ],
+      "cues": [
+        {
+          "text": "The inspector shows the actual tool surface the",
+          "from": 2,
+          "to": 99
+        },
+        {
+          "text": "agent talks to: semantic WebMCP tools, not",
+          "from": 99,
+          "to": 186
+        },
+        {
+          "text": "screen scraping.",
+          "from": 186,
+          "to": 219
+        }
+      ]
+    },
+    {
+      "id": "05-read-state",
+      "from": 1335,
+      "durationInFrames": 221,
+      "audio": "audio/05-read-state.mp3",
+      "shots": [
+        {
+          "image": "frames/07-05-read-state.png",
+          "target": {
+            "x": 36,
+            "y": 712,
+            "width": 969,
+            "height": 96
+          },
+          "label": "Pick read-only tool",
+          "click": true,
+          "weight": 1,
+          "from": 1,
+          "durationInFrames": 47
+        },
+        {
+          "image": "frames/08-05-read-state.png",
+          "target": {
+            "x": 1049,
+            "y": 788,
+            "width": 131,
+            "height": 45
+          },
+          "label": "Execute",
+          "click": true,
+          "weight": 1,
+          "from": 47,
+          "durationInFrames": 47
+        },
+        {
+          "image": "frames/09-05-read-state.png",
+          "target": null,
+          "click": false,
+          "highlights": [
+            {
+              "x": 1049,
+              "y": 825,
+              "width": 835,
+              "height": 240,
+              "label": "Structured result + scenario version"
+            }
+          ],
+          "weight": 2.2,
+          "from": 93,
+          "durationInFrames": 128
+        }
+      ],
+      "cues": [
+        {
+          "text": "A read only tool returns structured state,",
+          "from": 2,
+          "to": 81
+        },
+        {
+          "text": "including the scenario version the agent is",
+          "from": 81,
+          "to": 162
+        },
+        {
+          "text": "allowed to act on.",
+          "from": 162,
+          "to": 196
+        }
+      ]
+    },
+    {
+      "id": "06-lock",
+      "from": 1557,
+      "durationInFrames": 381,
+      "audio": "audio/06-lock.mp3",
+      "shots": [
+        {
+          "image": "frames/10-06-lock.png",
+          "target": {
+            "x": 1729,
+            "y": 38,
+            "width": 144,
+            "height": 45
+          },
+          "label": "Close inspector",
+          "click": true,
+          "weight": 1,
+          "from": 1,
+          "durationInFrames": 47
+        },
+        {
+          "image": "frames/11-06-lock.png",
+          "target": {
+            "x": 1369,
+            "y": 999,
+            "width": 493,
+            "height": 72
+          },
+          "label": "Select Computer Lab",
+          "click": true,
+          "weight": 1,
+          "from": 47,
+          "durationInFrames": 47
+        },
+        {
+          "image": "frames/12-06-lock.png",
+          "target": {
+            "x": 1795,
+            "y": 1019,
+            "width": 53,
+            "height": 32
+          },
+          "label": "Lock asset",
+          "click": true,
+          "weight": 1,
+          "from": 93,
+          "durationInFrames": 47
+        },
+        {
+          "image": "frames/13-06-lock.png",
+          "target": null,
+          "click": false,
+          "highlights": [
+            {
+              "x": 1369,
+              "y": 999,
+              "width": 493,
+              "height": 72,
+              "label": "Locked by operator"
+            },
+            {
+              "x": 881,
+              "y": 41,
+              "width": 142,
+              "height": 40,
+              "label": "Tool surface re-registered"
+            }
+          ],
+          "weight": 2.2,
+          "from": 140,
+          "durationInFrames": 241
+        }
+      ],
+      "cues": [
+        {
+          "text": "Now a human constraint.",
+          "from": 2,
+          "to": 54
+        },
+        {
+          "text": "The operator locks the computer lab so it can",
+          "from": 54,
+          "to": 130
+        },
+        {
+          "text": "never be shed.",
+          "from": 130,
+          "to": 154
+        },
+        {
+          "text": "The scenario version advances and the tools",
+          "from": 154,
+          "to": 231
+        },
+        {
+          "text": "re-register, so any plan built on the old",
+          "from": 231,
+          "to": 305
+        },
+        {
+          "text": "version is refused as stale.",
+          "from": 305,
+          "to": 355
+        }
+      ]
+    },
+    {
+      "id": "07-cancel",
+      "from": 1937,
+      "durationInFrames": 350,
+      "audio": "audio/07-cancel.mp3",
+      "shots": [
+        {
+          "image": "frames/14-07-cancel.png",
+          "target": {
+            "x": 1022,
+            "y": 1035,
+            "width": 139,
+            "height": 45
+          },
+          "label": "Run simulation",
+          "click": true,
+          "weight": 1,
+          "from": 1,
+          "durationInFrames": 47
+        },
+        {
+          "image": "frames/15-07-cancel.png",
+          "target": {
+            "x": 1173,
+            "y": 1035,
+            "width": 122,
+            "height": 45
+          },
+          "label": "Cancel mid-sweep",
+          "click": true,
+          "weight": 1,
+          "from": 47,
+          "durationInFrames": 47
+        },
+        {
+          "image": "frames/16-07-cancel.png",
+          "target": null,
+          "click": false,
+          "highlights": [
+            {
+              "x": 57,
+              "y": 519,
+              "width": 1237,
+              "height": 41,
+              "label": "Canceled, nothing changed"
+            }
+          ],
+          "weight": 2.2,
+          "from": 93,
+          "durationInFrames": 257
+        }
+      ],
+      "cues": [
+        {
+          "text": "The solver runs in a web worker, and",
+          "from": 2,
+          "to": 72
+        },
+        {
+          "text": "cancellation is real.",
+          "from": 72,
+          "to": 113
+        },
+        {
+          "text": "Stop it mid sweep and the run is abandoned: no",
+          "from": 113,
+          "to": 206
+        },
+        {
+          "text": "candidates, no schedule change, nothing partial",
+          "from": 206,
+          "to": 300
+        },
+        {
+          "text": "left behind.",
+          "from": 300,
+          "to": 324
+        }
+      ]
+    },
+    {
+      "id": "08-candidates",
+      "from": 2287,
+      "durationInFrames": 341,
+      "audio": "audio/08-candidates.mp3",
+      "shots": [
+        {
+          "image": "frames/17-08-candidates.png",
+          "target": {
+            "x": 1022,
+            "y": 461,
+            "width": 139,
+            "height": 45
+          },
+          "label": "Re-run on current state",
+          "click": true,
+          "weight": 1,
+          "from": 1,
+          "durationInFrames": 47
+        },
+        {
+          "image": "frames/18-08-candidates.png",
+          "target": null,
+          "click": false,
+          "highlights": [
+            {
+              "x": 57,
+              "y": 519,
+              "width": 1237,
+              "height": 313,
+              "label": "Valid · computed, not guessed"
+            }
+          ],
+          "weight": 2.2,
+          "from": 47,
+          "durationInFrames": 294
+        }
+      ],
+      "cues": [
+        {
+          "text": "Run it again and the solver returns computed",
+          "from": 2,
+          "to": 85
+        },
+        {
+          "text": "candidates.",
+          "from": 85,
+          "to": 106
+        },
+        {
+          "text": "The balanced plan holds the window under the",
+          "from": 106,
+          "to": 186
+        },
+        {
+          "text": "limit, keeps both E V departure targets, and",
+          "from": 186,
+          "to": 266
+        },
+        {
+          "text": "respects the battery floor.",
+          "from": 266,
+          "to": 315
+        }
+      ]
+    },
+    {
+      "id": "09-invalid",
+      "from": 2627,
+      "durationInFrames": 377,
+      "audio": "audio/09-invalid.mp3",
+      "shots": [
+        {
+          "image": "frames/19-09-invalid.png",
+          "target": null,
+          "click": false,
+          "highlights": [
+            {
+              "x": 57,
+              "y": 346,
+              "width": 1237,
+              "height": 388,
+              "label": "Invalid · rebound violation"
+            },
+            {
+              "x": 76,
+              "y": 562,
+              "width": 1200,
+              "height": 68,
+              "label": "Reason in plain language"
+            }
+          ],
+          "weight": 2.2,
+          "from": 1,
+          "durationInFrames": 377
+        }
+      ],
+      "cues": [
+        {
+          "text": "The tempting alternative is not hidden.",
+          "from": 2,
+          "to": 75
+        },
+        {
+          "text": "Shed and restore looks cheaper, but rebounds to",
+          "from": 75,
+          "to": 160
+        },
+        {
+          "text": "two hundred twenty four kilowatts, so it is",
+          "from": 160,
+          "to": 237
+        },
+        {
+          "text": "marked invalid, with the reason spelled out and",
+          "from": 237,
+          "to": 322
+        },
+        {
+          "text": "no stage action.",
+          "from": 322,
+          "to": 351
+        }
+      ]
+    },
+    {
+      "id": "10-preview",
+      "from": 3004,
+      "durationInFrames": 282,
+      "audio": "audio/10-preview.mp3",
+      "shots": [
+        {
+          "image": "frames/20-10-preview.png",
+          "target": {
+            "x": 76,
+            "y": 518,
+            "width": 132,
+            "height": 45
+          },
+          "label": "Preview plan",
+          "click": true,
+          "weight": 1,
+          "from": 1,
+          "durationInFrames": 47
+        },
+        {
+          "image": "frames/21-10-preview.png",
+          "target": null,
+          "click": false,
+          "highlights": [
+            {
+              "x": 32,
+              "y": 0,
+              "width": 1288,
+              "height": 600,
+              "label": "Ghost plan vs. live baseline"
+            }
+          ],
+          "weight": 2.2,
+          "from": 47,
+          "durationInFrames": 235
+        }
+      ],
+      "cues": [
+        {
+          "text": "Preview first.",
+          "from": 2,
+          "to": 37
+        },
+        {
+          "text": "The plan appears as a ghost line against the",
+          "from": 37,
+          "to": 125
+        },
+        {
+          "text": "untouched baseline, so the operator sees exactly",
+          "from": 125,
+          "to": 220
+        },
+        {
+          "text": "what would change.",
+          "from": 220,
+          "to": 256
+        }
+      ]
+    },
+    {
+      "id": "11-stage",
+      "from": 3286,
+      "durationInFrames": 296,
+      "audio": "audio/11-stage.mp3",
+      "shots": [
+        {
+          "image": "frames/22-11-stage.png",
+          "target": {
+            "x": 260,
+            "y": 518,
+            "width": 190,
+            "height": 45
+          },
+          "label": "Stage for approval",
+          "click": true,
+          "weight": 1,
+          "from": 1,
+          "durationInFrames": 47
+        },
+        {
+          "image": "frames/23-11-stage.png",
+          "target": null,
+          "click": false,
+          "highlights": [
+            {
+              "x": 1359,
+              "y": 521,
+              "width": 523,
+              "height": 409,
+              "label": "Exact diff a human can audit"
+            }
+          ],
+          "weight": 2.2,
+          "from": 47,
+          "durationInFrames": 250
+        }
+      ],
+      "cues": [
+        {
+          "text": "Staging freezes the plan for review.",
+          "from": 2,
+          "to": 69
+        },
+        {
+          "text": "The drawer shows the exact load changes, the",
+          "from": 69,
+          "to": 154
+        },
+        {
+          "text": "resulting peak, the rebound, and the untouched",
+          "from": 154,
+          "to": 242
+        },
+        {
+          "text": "critical loads.",
+          "from": 242,
+          "to": 271
+        }
+      ]
+    },
+    {
+      "id": "12-approve",
+      "from": 3582,
+      "durationInFrames": 366,
+      "audio": "audio/12-approve.mp3",
+      "shots": [
+        {
+          "image": "frames/24-12-approve.png",
+          "target": {
+            "x": 1356,
+            "y": 952,
+            "width": 528,
+            "height": 59
+          },
+          "label": "Approve schedule",
+          "click": true,
+          "weight": 1,
+          "from": 1,
+          "durationInFrames": 47
+        },
+        {
+          "image": "frames/25-12-approve.png",
+          "target": null,
+          "click": false,
+          "highlights": [
+            {
+              "x": 1356,
+              "y": 957,
+              "width": 528,
+              "height": 59,
+              "label": "commit_load_plan now available"
+            },
+            {
+              "x": 881,
+              "y": 19,
+              "width": 142,
+              "height": 40,
+              "label": "Plus one tool after approval"
+            }
+          ],
+          "weight": 2.2,
+          "from": 47,
+          "durationInFrames": 320
+        }
+      ],
+      "cues": [
+        {
+          "text": "Until a human approves, the commit tool does not",
+          "from": 2,
+          "to": 109
+        },
+        {
+          "text": "exist.",
+          "from": 109,
+          "to": 122
+        },
+        {
+          "text": "Not hidden behind a check, simply not",
+          "from": 122,
+          "to": 191
+        },
+        {
+          "text": "registered, so the agent cannot discover it or",
+          "from": 191,
+          "to": 278
+        },
+        {
+          "text": "forge a click.",
+          "from": 278,
+          "to": 304
+        },
+        {
+          "text": "One approval mints it.",
+          "from": 304,
+          "to": 341
+        }
+      ]
+    },
+    {
+      "id": "13-commit",
+      "from": 3948,
+      "durationInFrames": 374,
+      "audio": "audio/13-commit.mp3",
+      "shots": [
+        {
+          "image": "frames/26-13-commit.png",
+          "target": {
+            "x": 1356,
+            "y": 957,
+            "width": 528,
+            "height": 59
+          },
+          "label": "Commit plan",
+          "click": true,
+          "weight": 1,
+          "from": 1,
+          "durationInFrames": 47
+        },
+        {
+          "image": "frames/27-13-commit.png",
+          "target": null,
+          "click": false,
+          "highlights": [
+            {
+              "x": 1369,
+              "y": 330,
+              "width": 493,
+              "height": 73,
+              "label": "Measured before → after"
+            },
+            {
+              "x": 1042,
+              "y": 19,
+              "width": 212,
+              "height": 40,
+              "label": "Sandbox control receipt"
+            }
+          ],
+          "weight": 2.2,
+          "from": 47,
+          "durationInFrames": 327
+        }
+      ],
+      "cues": [
+        {
+          "text": "Commit.",
+          "from": 2,
+          "to": 20
+        },
+        {
+          "text": "The peak drops from two hundred twelve to one",
+          "from": 20,
+          "to": 94
+        },
+        {
+          "text": "hundred sixty eight kilowatts, and the receipt",
+          "from": 94,
+          "to": 169
+        },
+        {
+          "text": "records the actor, the before and after numbers,",
+          "from": 169,
+          "to": 248
+        },
+        {
+          "text": "and the control mode: sandbox, so no command",
+          "from": 248,
+          "to": 320
+        },
+        {
+          "text": "left the browser.",
+          "from": 320,
+          "to": 348
+        }
+      ]
+    },
+    {
+      "id": "14-rollback",
+      "from": 4322,
+      "durationInFrames": 308,
+      "audio": "audio/14-rollback.mp3",
+      "shots": [
+        {
+          "image": "frames/28-14-rollback.png",
+          "target": {
+            "x": 1369,
+            "y": 500,
+            "width": 142,
+            "height": 45
+          },
+          "label": "Roll back",
+          "click": true,
+          "weight": 1,
+          "from": 1,
+          "durationInFrames": 47
+        },
+        {
+          "image": "frames/29-14-rollback.png",
+          "target": null,
+          "click": false,
+          "highlights": [
+            {
+              "x": 1369,
+              "y": 558,
+              "width": 493,
+              "height": 253,
+              "label": "Full audit trail preserved"
+            }
+          ],
+          "weight": 2.2,
+          "from": 47,
+          "durationInFrames": 262
+        }
+      ],
+      "cues": [
+        {
+          "text": "And it is reversible.",
+          "from": 2,
+          "to": 40
+        },
+        {
+          "text": "Rollback applies the precomputed inverse",
+          "from": 40,
+          "to": 118
+        },
+        {
+          "text": "schedule, restoring the baseline exactly, while",
+          "from": 118,
+          "to": 210
+        },
+        {
+          "text": "both actions stay in the audit trail.",
+          "from": 210,
+          "to": 283
+        }
+      ]
+    },
+    {
+      "id": "15-outro",
+      "from": 4630,
+      "durationInFrames": 276,
+      "audio": "audio/15-outro.mp3",
+      "shots": [
+        {
+          "image": "frames/30-15-outro.png",
+          "target": null,
+          "click": false,
+          "highlights": [],
+          "weight": 2.2,
+          "from": 1,
+          "durationInFrames": 276
+        }
+      ],
+      "cues": [
+        {
+          "text": "Real WebMCP orchestration, computed schedules,",
+          "from": 2,
+          "to": 97
+        },
+        {
+          "text": "human authority at the gate, and honest sandbox",
+          "from": 97,
+          "to": 195
+        },
+        {
+          "text": "boundaries.",
+          "from": 195,
+          "to": 218
+        },
+        {
+          "text": "That's WattWeave.",
+          "from": 218,
+          "to": 250
+        }
+      ]
+    }
+  ]
+}

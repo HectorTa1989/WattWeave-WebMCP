@@ -7,7 +7,7 @@ import { GridIcon, SunIcon, BatteryIcon, BuildingIcon, SparkIcon } from './Icons
 
 /**
  * Energy-flow view: grid, solar and battery feeding the building's zones.
- * Particle density and speed track real dispatch numbers, so the animation is
+ * Particle density and speed track schedule-derived dispatch numbers, so the animation is
  * a readout, not decoration. Free plan gets static proportional arrows.
  */
 
@@ -227,7 +227,7 @@ export function FlowView() {
       {!pro && (
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 11.5, color: 'var(--text-2)', marginTop: 6 }}>
           <SparkIcon size={13} />
-          Static flow shown. Living Grid+ animates real dispatch — included with Pro.
+          Static flow shown. Living Grid+ animates schedule dispatch — included with Pro.
         </div>
       )}
       <div style={{ fontSize: 11, color: 'var(--text-3)', marginTop: 6 }}>

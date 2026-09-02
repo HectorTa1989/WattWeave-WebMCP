@@ -68,7 +68,7 @@ export const commitSchema = z
     approvalToken: z
       .string()
       .min(1)
-      .describe('Issued only when the operator clicks “Approve and apply schedule”'),
+      .describe('Issued only when the operator clicks “Approve schedule”'),
     idempotencyKey: z.string().min(1),
   })
   .strict()

@@ -57,15 +57,23 @@ export function PlannerPanel({ onUpgrade }: Props) {
           ))}
         </div>
         <span style={{ flex: 1 }} />
-        {running ? (
-          <button className="btn danger" onClick={() => state.cancelSimulation('operator')} data-testid="cancel-sim">
-            <StopIcon size={13} /> Cancel
-          </button>
-        ) : (
-          <button className="btn primary" onClick={run} data-testid="run-sim" disabled={Boolean(state.committed)}>
-            <PlayIcon size={13} /> {state.candidates.length ? 'Re-simulate' : 'Simulate'}
-          </button>
-        )}
+        {/* Keep Run and Cancel in different fixed slots. If the worker finishes
+            under a pointer-down, the disappearing Cancel control must not be
+            replaced by Re-simulate at the same coordinates. */}
+        <span style={{ minWidth: 112, display: 'flex', justifyContent: 'flex-end' }}>
+          {!running && (
+            <button className="btn primary" onClick={run} data-testid="run-sim" disabled={Boolean(state.committed)}>
+              <PlayIcon size={13} /> {state.candidates.length ? 'Re-simulate' : 'Simulate'}
+            </button>
+          )}
+        </span>
+        <span style={{ minWidth: 92, display: 'flex', justifyContent: 'flex-end' }}>
+          {running && (
+            <button className="btn danger" onClick={() => state.cancelSimulation('operator')} data-testid="cancel-sim">
+              <StopIcon size={13} /> Cancel
+            </button>
+          )}
+        </span>
       </div>
 
       {running && (

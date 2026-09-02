@@ -4,6 +4,7 @@ interface ImportMetaEnv {
   readonly VITE_POLAR_CHECKOUT_LINK?: string
   readonly VITE_POLAR_ORG?: string
   readonly VITE_POLAR_VALIDATE_URL?: string
+  readonly VITE_CONTROL_GATEWAY_URL?: string
 }
 
 interface ImportMeta {

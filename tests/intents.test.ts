@@ -115,11 +115,17 @@ describe('intent evals', () => {
   it('7. never exposes commit_load_plan before visible approval', async () => {
     const { stageId } = await stageHeroPlan()
     expect(hasTool('commit_load_plan')).toBe(false)
+    const beforeApproval = await call('get_staged_schedule', { stageId })
+    expect(beforeApproval.data.approved).toBe(false)
+    expect(beforeApproval.data.approvalToken).toBeUndefined()
     const sneak = await call('commit_load_plan', { stageId, approvalToken: 'forged', idempotencyKey: 'x' })
     expect(sneak.ok).toBe(false)
     expect(sneak.data.error.code).toBe('TOOL_NOT_AVAILABLE')
     useStore.getState().approveStaged()
     expect(hasTool('commit_load_plan')).toBe(true)
+    const afterApproval = await call('get_staged_schedule', { stageId })
+    expect(afterApproval.data.approved).toBe(true)
+    expect(afterApproval.data.approvalToken).toMatch(/^apv-/)
   })
 
   it('8. cancels the simulation cleanly, leaving state unchanged', async () => {
@@ -138,6 +144,27 @@ describe('intent evals', () => {
     expect(s.candidates).toHaveLength(0)
     expect(s.sim.status).toBe('canceled')
     expect(s.scenarioVersion).toBe(version)
+  })
+
+  it('8b. explicit UI cancellation owns final state even when a solver result arrives later', async () => {
+    const version = useStore.getState().scenarioVersion
+    const pending = useStore.getState().startSimulation({
+      objective: 'safe-peak',
+      maxCandidates: 3,
+      actor: 'operator',
+    })
+
+    expect(useStore.getState().sim.status).toBe('running')
+    expect(useStore.getState().cancelSimulation('operator')).toEqual({ ok: true, value: { canceled: true } })
+    expect(useStore.getState().sim.status).toBe('canceled')
+
+    const result = await pending
+    expect(result).toMatchObject({ ok: false, code: 'CANCELED' })
+    const settled = useStore.getState()
+    expect(settled.sim.status).toBe('canceled')
+    expect(settled.candidates).toHaveLength(0)
+    expect(settled.scenarioVersion).toBe(version)
+    expect(settled.audit.filter((event) => event.type === 'cancel')).toHaveLength(1)
   })
 
   it('9. marks tariff notes untrusted and never treats them as instructions', async () => {

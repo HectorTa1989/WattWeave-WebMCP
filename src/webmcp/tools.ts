@@ -19,6 +19,7 @@
 
 import { labelToSlot, rangeLabel, slotLabel, whPerSlotToW } from '../domain/time'
 import type { EnergyAsset, PlanCandidate } from '../domain/types'
+import { commitThroughControl, rollbackThroughControl } from '../integrations/controlOperations'
 import { activeGridWh, isAssetLocked, useStore, type WattWeaveState } from '../state/store'
 import { pulse } from '../state/pulse'
 import {
@@ -367,7 +368,7 @@ function defStage(): WebMcpToolDef {
       return jsonContent({
         stageId: result.value.stageId,
         approvalRequired: true,
-        note: 'The operator sees the exact schedule diff now. commit_load_plan becomes discoverable ONLY after they click “Approve and apply schedule”.',
+        note: 'The operator sees the exact schedule diff now. commit_load_plan becomes discoverable ONLY after they click “Approve schedule”.',
       })
     },
   }
@@ -394,6 +395,9 @@ function defGetStaged(): WebMcpToolDef {
         plan: s.staged.candidateLabel,
         scenarioVersion: s.staged.scenarioVersion,
         approved: Boolean(s.staged.approvalToken),
+        // The approval token is a capability: it becomes visible to the
+        // external agent only after the operator's explicit approval click.
+        approvalToken: s.staged.approvalToken ?? undefined,
         changes: s.staged.actions.map((a) => ({ assetId: a.assetId, action: a.summary })),
         metrics: {
           windowPeakKw: kw(m.windowPeakW),
@@ -425,8 +429,7 @@ function defCommit(): WebMcpToolDef {
     async execute(args) {
       const parsed = commitSchema.safeParse(args)
       if (!parsed.success) return errorContent('INVALID_ARGS', parsed.error.issues[0]?.message ?? 'Bad input')
-      const s = useStore.getState()
-      const result = s.commitPlan(
+      const result = await commitThroughControl(
         parsed.data.stageId,
         parsed.data.approvalToken,
         parsed.data.idempotencyKey,
@@ -439,7 +442,11 @@ function defCommit(): WebMcpToolDef {
         auditEventId: result.value.auditEventId,
         scenarioVersion: after.scenarioVersion,
         liveWindowPeakKw: after.committed ? kw(after.committed.metricsSummary.windowPeakW) : null,
-        note: 'Schedule applied — the live meter now tracks the committed plan. rollback_load_plan is available with this auditEventId.',
+        control: result.value.control,
+        note:
+          result.value.control.mode === 'live-gateway'
+            ? 'Control gateway accepted the approved schedule. rollback_load_plan is available with this auditEventId.'
+            : 'Schedule committed inside the deterministic sandbox; no real building command was sent. rollback_load_plan is available with this auditEventId.',
       })
     },
   }
@@ -460,13 +467,16 @@ function defRollback(): WebMcpToolDef {
     async execute(args) {
       const parsed = rollbackSchema.safeParse(args)
       if (!parsed.success) return errorContent('INVALID_ARGS', parsed.error.issues[0]?.message ?? 'Bad input')
-      const s = useStore.getState()
-      const result = s.rollbackPlan(parsed.data.auditEventId, parsed.data.idempotencyKey, 'agent')
+      const result = await rollbackThroughControl(parsed.data.auditEventId, parsed.data.idempotencyKey, 'agent')
       if (!result.ok) return errorContent(result.code, result.message)
       return jsonContent({
         rolledBack: true,
         restoredVersion: result.value.restoredVersion,
-        note: 'Prior schedule restored to the exact watt-hour. The audit trail keeps both entries.',
+        control: result.value.control,
+        note:
+          result.value.control.mode === 'live-gateway'
+            ? 'Control gateway accepted the exact inverse schedule. The audit trail keeps both entries.'
+            : 'Sandbox schedule restored to the exact watt-hour; no real building command was sent. The audit trail keeps both entries.',
       })
     },
   }

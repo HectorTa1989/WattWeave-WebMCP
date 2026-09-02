@@ -54,7 +54,7 @@ export function EventBanner() {
         <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
           <div className="chip">
             <span className="dot pulse-dot" style={{ color: 'var(--blue)' }} />
-            Live <strong>{fmtKw(nowW)}</strong>
+            Simulated now <strong>{fmtKw(nowW)}</strong>
           </div>
           <div className={`chip ${compliant ? 'good' : 'danger'}`} data-testid="window-peak-chip">
             Event peak <strong>{fmtKw(windowPeak.w)}</strong>

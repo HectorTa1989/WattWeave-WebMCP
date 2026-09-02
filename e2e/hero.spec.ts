@@ -12,6 +12,8 @@ async function freshApp(page: Page) {
   await page.goto('/')
   await page.getByTestId('reset-btn').click()
   await expect(page.getByTestId('event-banner')).toBeVisible()
+  await expect(page.getByTestId('control-mode')).toContainText('Sandbox · no devices')
+  await expect(page.getByTestId('event-banner')).toContainText('Simulated now')
 }
 
 async function runSimulation(page: Page) {
@@ -96,9 +98,26 @@ test.describe('WattWeave', () => {
 
     await page.getByTestId('run-sim').click()
     await expect(page.getByTestId('sim-progress')).toBeVisible()
-    await expect(page.getByTestId('sweep-cursor')).toBeVisible()
-
-    await page.getByTestId('cancel-sim').click()
+    // Observe the sweep and cancel in the same browser task. A test-runner
+    // round trip here can outlive the intentionally short demo sweep.
+    await page.evaluate(() =>
+      new Promise<void>((resolve, reject) => {
+        const deadline = performance.now() + 10_000
+        const cancelDuringSweep = () => {
+          const sweep = document.querySelector('[data-testid="sweep-cursor"]')
+          const cancel = document.querySelector<HTMLButtonElement>('[data-testid="cancel-sim"]')
+          if (sweep && cancel) {
+            cancel.click()
+            resolve()
+          } else if (performance.now() >= deadline) {
+            reject(new Error('Simulation never entered a cancellable sweep.'))
+          } else {
+            requestAnimationFrame(cancelDuringSweep)
+          }
+        }
+        cancelDuringSweep()
+      }),
+    )
     await expect(page.getByTestId('canceled-note')).toBeVisible()
     await expect(page.getByTestId('canceled-note')).toContainText('Nothing changed')
 

@@ -197,7 +197,7 @@ export interface StagedSchedule {
   gridWh: number[]
   metrics: PlanMetrics
   inverse: InverseSchedule
-  /** Minted only when the human clicks "Approve and apply schedule". */
+  /** Minted only when the human clicks "Approve schedule". */
   approvalToken: string | null
 }
 

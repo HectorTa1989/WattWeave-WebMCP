@@ -1,6 +1,9 @@
+import { useState } from 'react'
 import { useStore, activeGridWh } from '../state/store'
 import { computeGridWh } from '../domain/schedule'
 import { fmtKw, fmtKwh, peakW, slotLabel } from '../domain/time'
+import { rollbackThroughControl } from '../integrations/controlOperations'
+import { controlMode } from '../integrations/controlGateway'
 import { usePulse } from '../hooks/usePulse'
 import { hasFeature } from '../billing/entitlements'
 import { CheckIcon, DocIcon, SparkIcon, UndoIcon } from './Icons'
@@ -19,6 +22,9 @@ export function ReceiptPanel({ onUpgrade }: Props) {
   const pulsing = usePulse('audit')
   const canExport = hasFeature(state.user, 'audit.export')
   const committed = state.committed
+  const control = controlMode()
+  const [rollingBack, setRollingBack] = useState(false)
+  const [rollbackError, setRollbackError] = useState<string | null>(null)
 
   const baseline = computeGridWh(state.assets)
   const basePeak = peakW(baseline)
@@ -26,9 +32,17 @@ export function ReceiptPanel({ onUpgrade }: Props) {
   const live = activeGridWh(state)
   const livePeak = peakW(live)
 
-  const rollback = () => {
+  const rollback = async () => {
     if (!committed) return
-    state.rollbackPlan(committed.auditEventId, `rollback-${committed.auditEventId}`, 'agent')
+    setRollingBack(true)
+    setRollbackError(null)
+    const result = await rollbackThroughControl(
+      committed.auditEventId,
+      `rollback-${committed.auditEventId}`,
+      'operator',
+    )
+    if (!result.ok) setRollbackError(result.message)
+    setRollingBack(false)
   }
 
   const exportReceipt = () => {
@@ -65,13 +79,15 @@ export function ReceiptPanel({ onUpgrade }: Props) {
         <div>
           <h2 className="card-title">{committed ? 'Action receipt' : 'Audit trail'}</h2>
           <div className="card-sub">
-            {committed ? `Applied ${committed.candidateLabel}` : `${state.audit.length} event${state.audit.length === 1 ? '' : 's'} recorded`}
+            {committed
+              ? `${control === 'live-gateway' ? 'Gateway-dispatched' : 'Sandbox-applied'} ${committed.candidateLabel}`
+              : `${state.audit.length} event${state.audit.length === 1 ? '' : 's'} recorded`}
           </div>
         </div>
         <div className="right">
           {committed && (
             <span className="chip good">
-              <CheckIcon size={12} /> live
+              <CheckIcon size={12} /> {control === 'live-gateway' ? 'gateway' : 'simulation'}
             </span>
           )}
         </div>
@@ -103,8 +119,8 @@ export function ReceiptPanel({ onUpgrade }: Props) {
           </div>
 
           <div style={{ display: 'flex', gap: 7 }}>
-            <button className="btn danger" onClick={rollback} data-testid="rollback-btn">
-              <UndoIcon size={13} /> Roll back
+            <button className="btn danger" onClick={() => void rollback()} disabled={rollingBack} data-testid="rollback-btn">
+              <UndoIcon size={13} /> {rollingBack ? 'Rolling back…' : 'Roll back'}
             </button>
             {canExport ? (
               <button className="btn ghost" onClick={exportReceipt} data-testid="export-receipt">
@@ -119,6 +135,11 @@ export function ReceiptPanel({ onUpgrade }: Props) {
               </button>
             )}
           </div>
+          {rollbackError && (
+            <div className="violation-note" style={{ marginTop: 8 }} data-testid="rollback-error">
+              {rollbackError}
+            </div>
+          )}
         </>
       )}
 

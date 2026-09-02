@@ -13,6 +13,7 @@ import { ReceiptPanel } from './components/ReceiptPanel'
 import { Inspector } from './components/Inspector'
 import { SignInModal, UpgradeModal } from './components/AccountModals'
 import { BoltIcon, MoonIcon, SparkIcon, TerminalIcon, UndoIcon } from './components/Icons'
+import { controlMode } from './integrations/controlGateway'
 
 type Theme = 'light' | 'dark' | 'system'
 
@@ -35,6 +36,7 @@ export default function App() {
   const user = state.user
   const isAdmin = user?.role === 'admin'
   const isPro = user?.plan === 'pro'
+  const control = controlMode()
 
   return (
     <div className="app-shell">
@@ -53,6 +55,14 @@ export default function App() {
 
         <span className="chip accent" title="Tools registered for the current UI state" data-testid="tool-count">
           <TerminalIcon size={12} /> {tools.tools.length} tools live
+        </span>
+
+        <span
+          className={`chip ${control === 'live-gateway' ? 'good' : 'warn'}`}
+          title={control === 'live-gateway' ? 'Approved commands route through the configured control gateway' : 'No command can leave this browser'}
+          data-testid="control-mode"
+        >
+          <span className="dot" /> {control === 'live-gateway' ? 'Control gateway' : 'Sandbox · no devices'}
         </span>
 
         {user ? (
@@ -108,7 +118,9 @@ export default function App() {
       {signInOpen && <SignInModal onClose={() => setSignInOpen(false)} />}
 
       <footer style={{ marginTop: 28, fontSize: 11.5, color: 'var(--text-3)', textAlign: 'center', lineHeight: 1.6 }}>
-        Deterministic sandbox · no real building controls, no external APIs · seed {state.scenarioId}
+        {control === 'live-gateway'
+          ? `Connected control-gateway mode · schedule data remains the deterministic ${state.scenarioId} scenario`
+          : `Deterministic sandbox · no real building control or telemetry · seed ${state.scenarioId}`}
         <br />
         Built by{' '}
         <a href="https://github.com/HectorTa1989" style={{ color: 'var(--text-2)' }} target="_blank" rel="noopener noreferrer">

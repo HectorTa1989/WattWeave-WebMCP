@@ -144,9 +144,19 @@ let auditSeq = 0
 let stageSeq = 0
 let tokenSeq = 0
 let currentAbort: AbortController | null = null
+// Invalidates callbacks/results from simulations that were canceled or reset.
+// Abort messages cross the worker boundary asynchronously, so the AbortSignal
+// alone cannot prevent an older run from publishing after a newer state change.
+let simulationRunEpoch = 0
 
 /** Sweep pacing — tests set this to 0 to run simulations instantly. */
 export const simTiming = { stepDelayMs: 28 }
+
+// Dev-only handle so the demo recorder can slow the sweep down enough to film
+// a mid-run cancellation. Never exposed in a production build.
+if (import.meta.env.DEV && typeof window !== 'undefined') {
+  ;(window as unknown as { __wattweaveSimTiming?: typeof simTiming }).__wattweaveSimTiming = simTiming
+}
 
 function makeAudit(type: AuditEventType, actor: Actor, summary: string, refId?: string): AuditEvent {
   auditSeq += 1
@@ -230,8 +240,10 @@ function buildInitialState(): StateData {
 
 /** Restore the pristine seed scenario. Used by tests and the demo reset button. */
 export function resetStore(): void {
-  currentAbort?.abort()
+  simulationRunEpoch += 1
+  const abort = currentAbort
   currentAbort = null
+  abort?.abort()
   useStore.setState(buildInitialState())
 }
 
@@ -321,6 +333,7 @@ export const useStore = create<WattWeaveState>()((set, get) => ({
       return err('SIM_RUNNING', 'A simulation is already running — cancel it first.')
     }
     const abort = new AbortController()
+    const runEpoch = ++simulationRunEpoch
     currentAbort = abort
     if (externalSignal) {
       if (externalSignal.aborted) abort.abort()
@@ -347,9 +360,17 @@ export const useStore = create<WattWeaveState>()((set, get) => ({
     const result = await runSimulation(input, {
       signal: abort.signal,
       stepDelayMs: simTiming.stepDelayMs,
-      onProgress: (p) =>
-        set({ sim: { status: 'running', progress: p.pct, sweepSlot: p.sweepSlot, phase: p.phase } }),
+      onProgress: (p) => {
+        if (runEpoch !== simulationRunEpoch || currentAbort !== abort) return
+        set({ sim: { status: 'running', progress: p.pct, sweepSlot: p.sweepSlot, phase: p.phase } })
+      },
     })
+
+    // A reset or explicit cancel owns the final state synchronously. Never let
+    // a late worker result overwrite that newer state.
+    if (runEpoch !== simulationRunEpoch || currentAbort !== abort) {
+      return err('CANCELED', 'Simulation canceled before completion. No candidates were produced and no state changed.')
+    }
     currentAbort = null
 
     if (result.status === 'canceled') {
@@ -391,11 +412,17 @@ export const useStore = create<WattWeaveState>()((set, get) => ({
   },
 
   cancelSimulation(actor) {
-    void actor
     if (get().sim.status !== 'running' || !currentAbort) {
       return err('NOT_RUNNING', 'No simulation is running.')
     }
-    currentAbort.abort()
+    const abort = currentAbort
+    simulationRunEpoch += 1
+    currentAbort = null
+    set({
+      sim: { status: 'canceled', progress: 0, sweepSlot: null, phase: null },
+      audit: [...get().audit, makeAudit('cancel', actor, 'Simulation canceled — no state changed')],
+    })
+    abort.abort()
     return ok({ canceled: true })
   },
 

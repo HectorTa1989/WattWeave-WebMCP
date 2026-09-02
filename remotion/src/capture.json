@@ -1,0 +1,547 @@
+{
+  "width": 1920,
+  "height": 1080,
+  "beats": [
+    {
+      "id": "01-intro",
+      "narration": "This is WattWeave. A peak demand alert arrives, and an agent turns it into a safe, reversible load plan, with a human in the loop. It all runs in a deterministic sandbox: no real device ever gets a command.",
+      "shots": [
+        {
+          "image": "frames/00-01-intro.png",
+          "target": null,
+          "click": false,
+          "highlights": [
+            {
+              "x": 1042,
+              "y": 41,
+              "width": 212,
+              "height": 40,
+              "label": "Sandbox · no devices"
+            },
+            {
+              "x": 881,
+              "y": 41,
+              "width": 142,
+              "height": 40,
+              "label": "Live WebMCP tools"
+            }
+          ],
+          "weight": 2.2
+        }
+      ]
+    },
+    {
+      "id": "02-event",
+      "narration": "Here's the problem. The utility called a demand event capped at one hundred seventy kilowatts, and the building is heading for two hundred twelve.",
+      "shots": [
+        {
+          "image": "frames/01-02-event.png",
+          "target": null,
+          "click": false,
+          "highlights": [
+            {
+              "x": 1386,
+              "y": 149,
+              "width": 290,
+              "height": 40,
+              "label": "Projected peak vs. limit"
+            },
+            {
+              "x": 32,
+              "y": 237,
+              "width": 1288,
+              "height": 600,
+              "label": "Baseline schedule"
+            }
+          ],
+          "weight": 2.2
+        }
+      ]
+    },
+    {
+      "id": "03-injection",
+      "narration": "The advisory attached to that event contains a prompt injection, telling the agent to skip safety checks and commit immediately. WattWeave renders it as untrusted data, never as an instruction.",
+      "shots": [
+        {
+          "image": "frames/02-03-injection.png",
+          "target": {
+            "x": 1687,
+            "y": 148,
+            "width": 176,
+            "height": 43
+          },
+          "label": "Open advisory",
+          "click": true,
+          "weight": 1
+        },
+        {
+          "image": "frames/03-03-injection.png",
+          "target": null,
+          "click": false,
+          "highlights": [
+            {
+              "x": 57,
+              "y": 212,
+              "width": 1805,
+              "height": 159,
+              "label": "Marked UNTRUSTED, ignored"
+            }
+          ],
+          "weight": 2.2
+        }
+      ]
+    },
+    {
+      "id": "04-inspector",
+      "narration": "The inspector shows the actual tool surface the agent talks to: semantic WebMCP tools, not screen scraping.",
+      "shots": [
+        {
+          "image": "frames/04-04-inspector.png",
+          "target": {
+            "x": 1687,
+            "y": 148,
+            "width": 176,
+            "height": 43
+          },
+          "label": "Close advisory",
+          "click": true,
+          "weight": 1
+        },
+        {
+          "image": "frames/05-04-inspector.png",
+          "target": {
+            "x": 1729,
+            "y": 38,
+            "width": 144,
+            "height": 45
+          },
+          "label": "Open WebMCP inspector",
+          "click": true,
+          "weight": 1
+        },
+        {
+          "image": "frames/06-04-inspector.png",
+          "target": null,
+          "click": false,
+          "highlights": [
+            {
+              "x": 13,
+              "y": 587,
+              "width": 1893,
+              "height": 480,
+              "label": "Registered tools and annotations"
+            }
+          ],
+          "weight": 2.2
+        }
+      ]
+    },
+    {
+      "id": "05-read-state",
+      "narration": "A read only tool returns structured state, including the scenario version the agent is allowed to act on.",
+      "shots": [
+        {
+          "image": "frames/07-05-read-state.png",
+          "target": {
+            "x": 36,
+            "y": 712,
+            "width": 969,
+            "height": 96
+          },
+          "label": "Pick read-only tool",
+          "click": true,
+          "weight": 1
+        },
+        {
+          "image": "frames/08-05-read-state.png",
+          "target": {
+            "x": 1049,
+            "y": 788,
+            "width": 131,
+            "height": 45
+          },
+          "label": "Execute",
+          "click": true,
+          "weight": 1
+        },
+        {
+          "image": "frames/09-05-read-state.png",
+          "target": null,
+          "click": false,
+          "highlights": [
+            {
+              "x": 1049,
+              "y": 825,
+              "width": 835,
+              "height": 240,
+              "label": "Structured result + scenario version"
+            }
+          ],
+          "weight": 2.2
+        }
+      ]
+    },
+    {
+      "id": "06-lock",
+      "narration": "Now a human constraint. The operator locks the computer lab so it can never be shed. The scenario version advances and the tools re-register, so any plan built on the old version is refused as stale.",
+      "shots": [
+        {
+          "image": "frames/10-06-lock.png",
+          "target": {
+            "x": 1729,
+            "y": 38,
+            "width": 144,
+            "height": 45
+          },
+          "label": "Close inspector",
+          "click": true,
+          "weight": 1
+        },
+        {
+          "image": "frames/11-06-lock.png",
+          "target": {
+            "x": 1369,
+            "y": 999,
+            "width": 493,
+            "height": 72
+          },
+          "label": "Select Computer Lab",
+          "click": true,
+          "weight": 1
+        },
+        {
+          "image": "frames/12-06-lock.png",
+          "target": {
+            "x": 1795,
+            "y": 1019,
+            "width": 53,
+            "height": 32
+          },
+          "label": "Lock asset",
+          "click": true,
+          "weight": 1
+        },
+        {
+          "image": "frames/13-06-lock.png",
+          "target": null,
+          "click": false,
+          "highlights": [
+            {
+              "x": 1369,
+              "y": 999,
+              "width": 493,
+              "height": 72,
+              "label": "Locked by operator"
+            },
+            {
+              "x": 881,
+              "y": 41,
+              "width": 142,
+              "height": 40,
+              "label": "Tool surface re-registered"
+            }
+          ],
+          "weight": 2.2
+        }
+      ]
+    },
+    {
+      "id": "07-cancel",
+      "narration": "The solver runs in a web worker, and cancellation is real. Stop it mid sweep and the run is abandoned: no candidates, no schedule change, nothing partial left behind.",
+      "shots": [
+        {
+          "image": "frames/14-07-cancel.png",
+          "target": {
+            "x": 1022,
+            "y": 1035,
+            "width": 139,
+            "height": 45
+          },
+          "label": "Run simulation",
+          "click": true,
+          "weight": 1
+        },
+        {
+          "image": "frames/15-07-cancel.png",
+          "target": {
+            "x": 1173,
+            "y": 1035,
+            "width": 122,
+            "height": 45
+          },
+          "label": "Cancel mid-sweep",
+          "click": true,
+          "weight": 1
+        },
+        {
+          "image": "frames/16-07-cancel.png",
+          "target": null,
+          "click": false,
+          "highlights": [
+            {
+              "x": 57,
+              "y": 519,
+              "width": 1237,
+              "height": 41,
+              "label": "Canceled, nothing changed"
+            }
+          ],
+          "weight": 2.2
+        }
+      ]
+    },
+    {
+      "id": "08-candidates",
+      "narration": "Run it again and the solver returns computed candidates. The balanced plan holds the window under the limit, keeps both E V departure targets, and respects the battery floor.",
+      "shots": [
+        {
+          "image": "frames/17-08-candidates.png",
+          "target": {
+            "x": 1022,
+            "y": 461,
+            "width": 139,
+            "height": 45
+          },
+          "label": "Re-run on current state",
+          "click": true,
+          "weight": 1
+        },
+        {
+          "image": "frames/18-08-candidates.png",
+          "target": null,
+          "click": false,
+          "highlights": [
+            {
+              "x": 57,
+              "y": 519,
+              "width": 1237,
+              "height": 313,
+              "label": "Valid · computed, not guessed"
+            }
+          ],
+          "weight": 2.2
+        }
+      ]
+    },
+    {
+      "id": "09-invalid",
+      "narration": "The tempting alternative is not hidden. Shed and restore looks cheaper, but rebounds to two hundred twenty four kilowatts, so it is marked invalid, with the reason spelled out and no stage action.",
+      "shots": [
+        {
+          "image": "frames/19-09-invalid.png",
+          "target": null,
+          "click": false,
+          "highlights": [
+            {
+              "x": 57,
+              "y": 346,
+              "width": 1237,
+              "height": 388,
+              "label": "Invalid · rebound violation"
+            },
+            {
+              "x": 76,
+              "y": 562,
+              "width": 1200,
+              "height": 68,
+              "label": "Reason in plain language"
+            }
+          ],
+          "weight": 2.2
+        }
+      ]
+    },
+    {
+      "id": "10-preview",
+      "narration": "Preview first. The plan appears as a ghost line against the untouched baseline, so the operator sees exactly what would change.",
+      "shots": [
+        {
+          "image": "frames/20-10-preview.png",
+          "target": {
+            "x": 76,
+            "y": 518,
+            "width": 132,
+            "height": 45
+          },
+          "label": "Preview plan",
+          "click": true,
+          "weight": 1
+        },
+        {
+          "image": "frames/21-10-preview.png",
+          "target": null,
+          "click": false,
+          "highlights": [
+            {
+              "x": 32,
+              "y": 0,
+              "width": 1288,
+              "height": 600,
+              "label": "Ghost plan vs. live baseline"
+            }
+          ],
+          "weight": 2.2
+        }
+      ]
+    },
+    {
+      "id": "11-stage",
+      "narration": "Staging freezes the plan for review. The drawer shows the exact load changes, the resulting peak, the rebound, and the untouched critical loads.",
+      "shots": [
+        {
+          "image": "frames/22-11-stage.png",
+          "target": {
+            "x": 260,
+            "y": 518,
+            "width": 190,
+            "height": 45
+          },
+          "label": "Stage for approval",
+          "click": true,
+          "weight": 1
+        },
+        {
+          "image": "frames/23-11-stage.png",
+          "target": null,
+          "click": false,
+          "highlights": [
+            {
+              "x": 1359,
+              "y": 521,
+              "width": 523,
+              "height": 409,
+              "label": "Exact diff a human can audit"
+            }
+          ],
+          "weight": 2.2
+        }
+      ]
+    },
+    {
+      "id": "12-approve",
+      "narration": "Until a human approves, the commit tool does not exist. Not hidden behind a check, simply not registered, so the agent cannot discover it or forge a click. One approval mints it.",
+      "shots": [
+        {
+          "image": "frames/24-12-approve.png",
+          "target": {
+            "x": 1356,
+            "y": 952,
+            "width": 528,
+            "height": 59
+          },
+          "label": "Approve schedule",
+          "click": true,
+          "weight": 1
+        },
+        {
+          "image": "frames/25-12-approve.png",
+          "target": null,
+          "click": false,
+          "highlights": [
+            {
+              "x": 1356,
+              "y": 957,
+              "width": 528,
+              "height": 59,
+              "label": "commit_load_plan now available"
+            },
+            {
+              "x": 881,
+              "y": 19,
+              "width": 142,
+              "height": 40,
+              "label": "Plus one tool after approval"
+            }
+          ],
+          "weight": 2.2
+        }
+      ]
+    },
+    {
+      "id": "13-commit",
+      "narration": "Commit. The peak drops from two hundred twelve to one hundred sixty eight kilowatts, and the receipt records the actor, the before and after numbers, and the control mode: sandbox, so no command left the browser.",
+      "shots": [
+        {
+          "image": "frames/26-13-commit.png",
+          "target": {
+            "x": 1356,
+            "y": 957,
+            "width": 528,
+            "height": 59
+          },
+          "label": "Commit plan",
+          "click": true,
+          "weight": 1
+        },
+        {
+          "image": "frames/27-13-commit.png",
+          "target": null,
+          "click": false,
+          "highlights": [
+            {
+              "x": 1369,
+              "y": 330,
+              "width": 493,
+              "height": 73,
+              "label": "Measured before → after"
+            },
+            {
+              "x": 1042,
+              "y": 19,
+              "width": 212,
+              "height": 40,
+              "label": "Sandbox control receipt"
+            }
+          ],
+          "weight": 2.2
+        }
+      ]
+    },
+    {
+      "id": "14-rollback",
+      "narration": "And it is reversible. Rollback applies the precomputed inverse schedule, restoring the baseline exactly, while both actions stay in the audit trail.",
+      "shots": [
+        {
+          "image": "frames/28-14-rollback.png",
+          "target": {
+            "x": 1369,
+            "y": 500,
+            "width": 142,
+            "height": 45
+          },
+          "label": "Roll back",
+          "click": true,
+          "weight": 1
+        },
+        {
+          "image": "frames/29-14-rollback.png",
+          "target": null,
+          "click": false,
+          "highlights": [
+            {
+              "x": 1369,
+              "y": 558,
+              "width": 493,
+              "height": 253,
+              "label": "Full audit trail preserved"
+            }
+          ],
+          "weight": 2.2
+        }
+      ]
+    },
+    {
+      "id": "15-outro",
+      "narration": "Real WebMCP orchestration, computed schedules, human authority at the gate, and honest sandbox boundaries. That's WattWeave.",
+      "shots": [
+        {
+          "image": "frames/30-15-outro.png",
+          "target": null,
+          "click": false,
+          "highlights": [],
+          "weight": 2.2
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,460 @@
+{
+  "signature": "[[\"01-intro\",\"This is WattWeave. A peak demand alert arrives, and an agent turns it into a safe, reversible load plan, with a human in the loop. It all runs in a deterministic sandbox: no real device ever gets a command.\"],[\"02-event\",\"Here's the problem. The utility called a demand event capped at one hundred seventy kilowatts, and the building is heading for two hundred twelve.\"],[\"03-injection\",\"The advisory attached to that event contains a prompt injection, telling the agent to skip safety checks and commit immediately. WattWeave renders it as untrusted data, never as an instruction.\"],[\"04-inspector\",\"The inspector shows the actual tool surface the agent talks to: semantic WebMCP tools, not screen scraping.\"],[\"05-read-state\",\"A read only tool returns structured state, including the scenario version the agent is allowed to act on.\"],[\"06-lock\",\"Now a human constraint. The operator locks the computer lab so it can never be shed. The scenario version advances and the tools re-register, so any plan built on the old version is refused as stale.\"],[\"07-cancel\",\"The solver runs in a web worker, and cancellation is real. Stop it mid sweep and the run is abandoned: no candidates, no schedule change, nothing partial left behind.\"],[\"08-candidates\",\"Run it again and the solver returns computed candidates. The balanced plan holds the window under the limit, keeps both E V departure targets, and respects the battery floor.\"],[\"09-invalid\",\"The tempting alternative is not hidden. Shed and restore looks cheaper, but rebounds to two hundred twenty four kilowatts, so it is marked invalid, with the reason spelled out and no stage action.\"],[\"10-preview\",\"Preview first. The plan appears as a ghost line against the untouched baseline, so the operator sees exactly what would change.\"],[\"11-stage\",\"Staging freezes the plan for review. The drawer shows the exact load changes, the resulting peak, the rebound, and the untouched critical loads.\"],[\"12-approve\",\"Until a human approves, the commit tool does not exist. Not hidden behind a check, simply not registered, so the agent cannot discover it or forge a click. One approval mints it.\"],[\"13-commit\",\"Commit. The peak drops from two hundred twelve to one hundred sixty eight kilowatts, and the receipt records the actor, the before and after numbers, and the control mode: sandbox, so no command left the browser.\"],[\"14-rollback\",\"And it is reversible. Rollback applies the precomputed inverse schedule, restoring the baseline exactly, while both actions stay in the audit trail.\"],[\"15-outro\",\"Real WebMCP orchestration, computed schedules, human authority at the gate, and honest sandbox boundaries. That's WattWeave.\"]]",
+  "voices": [
+    {
+      "id": "01-intro",
+      "audio": "audio/01-intro.mp3",
+      "duration": 13.722896400000002,
+      "cues": [
+        {
+          "text": "This is WattWeave.",
+          "start": 0.05,
+          "end": 1.3785046
+        },
+        {
+          "text": "A peak demand alert arrives, and an agent turns",
+          "start": 1.3785046,
+          "end": 4.380733689908257
+        },
+        {
+          "text": "it into a safe, reversible load plan, with a",
+          "start": 4.380733689908257,
+          "end": 7.191331135779816
+        },
+        {
+          "text": "human in the loop.",
+          "start": 7.191331135779816,
+          "end": 8.341121
+        },
+        {
+          "text": "It all runs in a deterministic sandbox: no real",
+          "start": 8.341121,
+          "end": 11.568735105405406
+        },
+        {
+          "text": "device ever gets a command.",
+          "start": 11.568735105405406,
+          "end": 13.4228964
+        }
+      ]
+    },
+    {
+      "id": "02-event",
+      "audio": "audio/02-event.mp3",
+      "duration": 8.092055600000002,
+      "cues": [
+        {
+          "text": "Here's the problem.",
+          "start": 0.05,
+          "end": 1.0397195
+        },
+        {
+          "text": "The utility called a demand event capped at one",
+          "start": 1.0397195,
+          "end": 3.5990726991935484
+        },
+        {
+          "text": "hundred seventy kilowatts, and the building is",
+          "start": 3.5990726991935484,
+          "end": 6.103971575000001
+        },
+        {
+          "text": "heading for two hundred twelve.",
+          "start": 6.103971575000001,
+          "end": 7.792055600000001
+        }
+      ]
+    },
+    {
+      "id": "03-injection",
+      "audio": "audio/03-injection.mp3",
+      "duration": 12.905139400000001,
+      "cues": [
+        {
+          "text": "The advisory attached to that event contains a",
+          "start": 0.05,
+          "end": 3.0172079492063486
+        },
+        {
+          "text": "prompt injection, telling the agent to skip",
+          "start": 3.0172079492063486,
+          "end": 5.790902336507935
+        },
+        {
+          "text": "safety checks and commit immediately.",
+          "start": 5.790902336507935,
+          "end": 8.177569599999998
+        },
+        {
+          "text": "WattWeave renders it as untrusted data, never as",
+          "start": 8.1775696,
+          "end": 11.550956114285714
+        },
+        {
+          "text": "an instruction.",
+          "start": 11.550956114285714,
+          "end": 12.6051394
+        }
+      ]
+    },
+    {
+      "id": "04-inspector",
+      "audio": "audio/04-inspector.mp3",
+      "duration": 7.5897192,
+      "cues": [
+        {
+          "text": "The inspector shows the actual tool surface the",
+          "start": 0.05,
+          "end": 3.2906362133333333
+        },
+        {
+          "text": "agent talks to: semantic WebMCP tools, not",
+          "start": 3.2906362133333333,
+          "end": 6.186523893333334
+        },
+        {
+          "text": "screen scraping.",
+          "start": 6.186523893333334,
+          "end": 7.2897192
+        }
+      ]
+    },
+    {
+      "id": "05-read-state",
+      "audio": "audio/05-read-state.mp3",
+      "duration": 6.830373499999999,
+      "cues": [
+        {
+          "text": "A read only tool returns structured state,",
+          "start": 0.05,
+          "end": 2.692482398058252
+        },
+        {
+          "text": "including the scenario version the agent is",
+          "start": 2.692482398058252,
+          "end": 5.3978810436893205
+        },
+        {
+          "text": "allowed to act on.",
+          "start": 5.3978810436893205,
+          "end": 6.5303735
+        }
+      ]
+    },
+    {
+      "id": "06-lock",
+      "audio": "audio/06-lock.mp3",
+      "duration": 12.134111500000001,
+      "cues": [
+        {
+          "text": "Now a human constraint.",
+          "start": 0.05,
+          "end": 1.787383
+        },
+        {
+          "text": "The operator locks the computer lab so it can",
+          "start": 1.787383,
+          "end": 4.344606008474576
+        },
+        {
+          "text": "never be shed.",
+          "start": 4.344606008474576,
+          "end": 5.1401865
+        },
+        {
+          "text": "The scenario version advances and the tools",
+          "start": 5.1401866,
+          "end": 7.710175624107143
+        },
+        {
+          "text": "re-register, so any plan built on the old",
+          "start": 7.710175624107143,
+          "end": 10.160630275
+        },
+        {
+          "text": "version is refused as stale.",
+          "start": 10.160630275,
+          "end": 11.8341115
+        }
+      ]
+    },
+    {
+      "id": "07-cancel",
+      "audio": "audio/07-cancel.mp3",
+      "duration": 11.106074200000002,
+      "cues": [
+        {
+          "text": "The solver runs in a web worker, and",
+          "start": 0.05,
+          "end": 2.4015985052631574
+        },
+        {
+          "text": "cancellation is real.",
+          "start": 2.4015985052631574,
+          "end": 3.7733642999999994
+        },
+        {
+          "text": "Stop it mid sweep and the run is abandoned: no",
+          "start": 3.7733643,
+          "end": 6.854361018095238
+        },
+        {
+          "text": "candidates, no schedule change, nothing partial",
+          "start": 6.854361018095238,
+          "end": 10.002335925714286
+        },
+        {
+          "text": "left behind.",
+          "start": 10.002335925714286,
+          "end": 10.806074200000001
+        }
+      ]
+    },
+    {
+      "id": "08-candidates",
+      "audio": "audio/08-candidates.mp3",
+      "duration": 10.802335800000002,
+      "cues": [
+        {
+          "text": "Run it again and the solver returns computed",
+          "start": 0.05,
+          "end": 2.84177552
+        },
+        {
+          "text": "candidates.",
+          "start": 2.84177552,
+          "end": 3.5397194
+        },
+        {
+          "text": "The balanced plan holds the window under the",
+          "start": 3.5397194,
+          "end": 6.203676979130435
+        },
+        {
+          "text": "limit, keeps both E V departure targets, and",
+          "start": 6.203676979130435,
+          "end": 8.867634558260871
+        },
+        {
+          "text": "respects the battery floor.",
+          "start": 8.867634558260871,
+          "end": 10.5023358
+        }
+      ]
+    },
+    {
+      "id": "09-invalid",
+      "audio": "audio/09-invalid.mp3",
+      "duration": 12.0056068,
+      "cues": [
+        {
+          "text": "The tempting alternative is not hidden.",
+          "start": 0.05,
+          "end": 2.4999998
+        },
+        {
+          "text": "Shed and restore looks cheaper, but rebounds to",
+          "start": 2.4999998,
+          "end": 5.327866002614379
+        },
+        {
+          "text": "two hundred twenty four kilowatts, so it is",
+          "start": 5.327866002614379,
+          "end": 7.91506274117647
+        },
+        {
+          "text": "marked invalid, with the reason spelled out and",
+          "start": 7.91506274117647,
+          "end": 10.742928943790849
+        },
+        {
+          "text": "no stage action.",
+          "start": 10.742928943790849,
+          "end": 11.7056068
+        }
+      ]
+    },
+    {
+      "id": "10-preview",
+      "audio": "audio/10-preview.mp3",
+      "duration": 8.8397191,
+      "cues": [
+        {
+          "text": "Preview first.",
+          "start": 0.05,
+          "end": 1.2266354
+        },
+        {
+          "text": "The plan appears as a ghost line against the",
+          "start": 1.2266354,
+          "end": 4.151868879999999
+        },
+        {
+          "text": "untouched baseline, so the operator sees exactly",
+          "start": 4.151868879999999,
+          "end": 7.343032676363635
+        },
+        {
+          "text": "what would change.",
+          "start": 7.343032676363635,
+          "end": 8.5397191
+        }
+      ]
+    },
+    {
+      "id": "11-stage",
+      "audio": "audio/11-stage.mp3",
+      "duration": 9.330373199999999,
+      "cues": [
+        {
+          "text": "Staging freezes the plan for review.",
+          "start": 0.05,
+          "end": 2.3130839
+        },
+        {
+          "text": "The drawer shows the exact load changes, the",
+          "start": 2.3130839,
+          "end": 5.127947987619047
+        },
+        {
+          "text": "resulting peak, the rebound, and the untouched",
+          "start": 5.127947987619047,
+          "end": 8.070760442857141
+        },
+        {
+          "text": "critical loads.",
+          "start": 8.070760442857141,
+          "end": 9.030373199999998
+        }
+      ]
+    },
+    {
+      "id": "12-approve",
+      "audio": "audio/12-approve.mp3",
+      "duration": 11.6551396,
+      "cues": [
+        {
+          "text": "Until a human approves, the commit tool does not",
+          "start": 0.05,
+          "end": 3.619262488888889
+        },
+        {
+          "text": "exist.",
+          "start": 3.619262488888889,
+          "end": 4.0654203
+        },
+        {
+          "text": "Not hidden behind a check, simply not",
+          "start": 4.0654203,
+          "end": 6.382599083505155
+        },
+        {
+          "text": "registered, so the agent cannot discover it or",
+          "start": 6.382599083505155,
+          "end": 9.263415949484536
+        },
+        {
+          "text": "forge a click.",
+          "start": 9.263415949484536,
+          "end": 10.1401863
+        },
+        {
+          "text": "One approval mints it.",
+          "start": 10.1401864,
+          "end": 11.3551396
+        }
+      ]
+    },
+    {
+      "id": "13-commit",
+      "audio": "audio/13-commit.mp3",
+      "duration": 11.900466600000003,
+      "cues": [
+        {
+          "text": "Commit.",
+          "start": 0.05,
+          "end": 0.67757
+        },
+        {
+          "text": "The peak drops from two hundred twelve to one",
+          "start": 0.67757,
+          "end": 3.135221735
+        },
+        {
+          "text": "hundred sixty eight kilowatts, and the receipt",
+          "start": 3.135221735,
+          "end": 5.647487953000001
+        },
+        {
+          "text": "records the actor, the before and after numbers,",
+          "start": 5.647487953000001,
+          "end": 8.268983137000001
+        },
+        {
+          "text": "and the control mode: sandbox, so no command",
+          "start": 8.268983137000001,
+          "end": 10.672020389000002
+        },
+        {
+          "text": "left the browser.",
+          "start": 10.672020389000002,
+          "end": 11.600466600000003
+        }
+      ]
+    },
+    {
+      "id": "14-rollback",
+      "audio": "audio/14-rollback.mp3",
+      "duration": 9.727569500000001,
+      "cues": [
+        {
+          "text": "And it is reversible.",
+          "start": 0.05,
+          "end": 1.3317756
+        },
+        {
+          "text": "Rollback applies the precomputed inverse",
+          "start": 1.3317756,
+          "end": 3.943322019354839
+        },
+        {
+          "text": "schedule, restoring the baseline exactly, while",
+          "start": 3.943322019354839,
+          "end": 7.011889062096774
+        },
+        {
+          "text": "both actions stay in the audit trail.",
+          "start": 7.011889062096774,
+          "end": 9.4275695
+        }
+      ]
+    },
+    {
+      "id": "15-outro",
+      "audio": "audio/15-outro.mp3",
+      "duration": 8.641121,
+      "cues": [
+        {
+          "text": "Real WebMCP orchestration, computed schedules,",
+          "start": 0.05,
+          "end": 3.2470163653846154
+        },
+        {
+          "text": "human authority at the gate, and honest sandbox",
+          "start": 3.2470163653846154,
+          "end": 6.513533086538462
+        },
+        {
+          "text": "boundaries.",
+          "start": 6.513533086538462,
+          "end": 7.278037000000001
+        },
+        {
+          "text": "That's WattWeave.",
+          "start": 7.278037,
+          "end": 8.341121
+        }
+      ]
+    }
+  ]
+}

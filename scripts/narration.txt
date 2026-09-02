@@ -1,0 +1,23 @@
+Welcome to WattWeave, a deterministic energy-operations sandbox. The header says Sandbox, no devices. All demand and tariff data is seeded; this is not live building control.
+
+An external agent reads the event through WebMCP. A prompt injection in the utility advisory is displayed as untrusted data and never changes safety constraints.
+
+The operator locks the Computer Lab. The scenario version advances, so an old plan is rejected as stale. The agent must reread state.
+
+The Web Worker simulation is canceled mid-sweep. The cancellation wins, late results are ignored, and the UI confirms that nothing changed.
+
+The agent computes candidates. The balanced schedule stays below the target and avoids rebound. The tempting alternative is rejected at two hundred twenty-four kilowatts.
+
+The valid plan is previewed and staged. The approval drawer shows exact changes, critical-load preservation, and the inverse schedule. Commit is absent until the human clicks Approve schedule.
+
+After approval, the external agent commits. The sandbox receipt says no device command left the browser. Finally, rollback uses the audit identifier to restore the exact baseline. An optional fail-closed gateway is documented for real integrations, but this demo makes no live-control claim.
+
+Notice how every step remains visible to the operator. The chart keeps the baseline and the proposed schedule distinct. The event window is checked against the one hundred seventy kilowatt limit, while the rebound guard checks what happens after the event. The two electric vehicle departure targets are preserved, and the battery never crosses its safety floor.
+
+The naïve plan is not hidden. It is shown as a tempting alternative, with its failure explained in plain language. That makes the safety decision auditable instead of turning it into an unexplained black box. The agent can compare plans, but it cannot turn an invalid candidate into an executable action.
+
+The approval capability is deliberately short-lived and tied to the staged scenario version. If a human changes a lock after staging, the old approval becomes stale and the commit is refused. If the gateway times out or rejects a command, local state is left unchanged. Idempotency keys prevent a retry from issuing a second command.
+
+The final audit trail records who acted, what changed, the exact before and after measurements, and the inverse action set. That is why rollback restores the original watt-hour schedule rather than approximating it. In the default sandbox, all of this is simulated locally. With an explicitly configured gateway, the same approval boundary can hand off an allowlisted command to a site adapter.
+
+WattWeave is designed to make agentic operations understandable: the external agent plans, the human approves, the system proves what happened, and the operator can reverse it exactly.

@@ -43,6 +43,13 @@ export function runSimulation(input: SolveInput, opts: RunOptions = {}): Promise
 
   const runId = nextRunId++
   return new Promise<SolveResult>((resolve) => {
+    let settled = false
+    const settle = (result: SolveResult) => {
+      if (settled) return
+      settled = true
+      cleanup()
+      resolve(result)
+    }
     const cleanup = () => {
       w.removeEventListener('message', onMessage)
       opts.signal?.removeEventListener('abort', onAbort)
@@ -53,20 +60,23 @@ export function runSimulation(input: SolveInput, opts: RunOptions = {}): Promise
       if (msg.type === 'progress') {
         opts.onProgress?.(msg.progress)
       } else {
-        cleanup()
-        resolve(msg.result)
+        settle(msg.result)
       }
     }
     const onAbort = () => {
       const cancel: WorkerRequest = { type: 'cancel', runId }
       w.postMessage(cancel)
-      // The worker will answer with { status: 'canceled' } at its next checkpoint.
+      // Cancellation is authoritative on the main thread. The worker may have
+      // already queued a completed result while the UI still shows "Cancel";
+      // settling here ensures that late result cannot beat the operator's
+      // abort. The cancel message still stops worker-side computation at its
+      // next checkpoint.
+      settle({ status: 'canceled' })
     }
     w.addEventListener('message', onMessage)
     if (opts.signal) {
       if (opts.signal.aborted) {
-        cleanup()
-        resolve({ status: 'canceled' })
+        settle({ status: 'canceled' })
         return
       }
       opts.signal.addEventListener('abort', onAbort, { once: true })
